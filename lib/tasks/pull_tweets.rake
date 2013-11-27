@@ -32,25 +32,28 @@ task :pull_tweets => :environment do
 			page_num = 5
 			puts "#{username}"
 
-			x = client.user_timeline(username, count: 200)
-			for i in(0..x.length-1)
-			    tweet = person.tweets.build
-			    tweet.text = x[i].text
-			    tweet.save
-			end
-			last_id = x.last.id-1  
+			# x = client.user_timeline(username, count: 200)
+			# for i in(0..x.length-1)
+			#     tweet = person.tweets.build
+			#     tweet.text = x[i].text
+			#     tweet.save
+			# end
+			# last_id = x.last.id-1  
 			
 			while page_num > 0
-				x = client.user_timeline(username, count: 200, page: page_num, max_id: last_id)
-				if x.last.nil?
-					break
-				end
+				x = client.user_timeline(username, count: 200, page: page_num)
+				puts page_num
 				for i in(0..x.length-1)
 				    tweet = person.tweets.build
 				    tweet.text = x[i].text
 				    tweet.save
 				end
-				last_id = x.last.id-1
+				# if x.last.nil?
+				# 	break
+				# else
+
+				# end
+				# last_id = x.last.id-1
 				page_num -= 1
 			end
 			# while prev_id != last_id do
