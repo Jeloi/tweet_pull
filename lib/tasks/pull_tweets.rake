@@ -1,5 +1,24 @@
 require "csv"
 
+desc "remove retweets"
+task :remove_retweets => :environment do
+	Tweet.all.each do |tweet|
+		if !(tweet.text =~ /^RT/).nil?
+			tweet.destroy
+		end
+	end
+end
+
+desc "change n to space"
+task :remove_newlines => :environment do
+	Tweet.all.each do |tweet|
+		new_text = tweet.text.gsub(/\n/, ' ')
+		new_text.gsub!(/\r/, ' ')
+		tweet.text = new_text
+		tweet.save!
+	end
+end
+
 desc "Generate person records from given csv file"
 task :generate_person_records => :environment do
 	csv_text = File.read(Rails.root.to_s+"/"+"input.csv")
